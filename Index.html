@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Loja Online Simples</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+        header { background: #007bff; color: #fff; padding: 1em 0; text-align: center; }
+        main { max-width: 800px; margin: 2em auto; background: #fff; padding: 2em; border-radius: 8px; }
+        .produtos { display: flex; flex-wrap: wrap; gap: 2em; justify-content: center; }
+        .produto { background: #fafafa; border: 1px solid #ddd; border-radius: 6px; padding: 1em; width: 220px; text-align: center; }
+        .produto img { width: 100%; height: 120px; object-fit: cover; border-radius: 4px; }
+        .produto button { background: #28a745; color: #fff; border: none; padding: 0.5em 1em; border-radius: 4px; cursor: pointer; margin-top: 0.5em; }
+        .produto button:hover { background: #218838; }
+        #carrinho { margin-top: 2em; }
+        #carrinho ul { list-style: none; padding: 0; }
+        #carrinho li { margin-bottom: 0.5em; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Minha Loja Online</h1>
+    </header>
+    <main>
+        <h2>Produtos em Destaque</h2>
+        <div class="produtos" id="lista-produtos">
+            <!-- Produtos serão inseridos aqui pelo JS -->
+        </div>
+        <section id="carrinho">
+            <h2>Carrinho</h2>
+            <ul id="itens-carrinho"></ul>
+            <p><strong>Total: R$ <span id="total-carrinho">0.00</span></strong></p>
+        </section>
+    </main>
+    <script>
+        const produtos = [
+            { id: 1, nome: "Camiseta Estilosa", preco: 49.90, imagem: "https://via.placeholder.com/200x120?text=Camiseta" },
+            { id: 2, nome: "Tênis Esportivo", preco: 129.90, imagem: "https://via.placeholder.com/200x120?text=T%C3%AAnis" },
+            { id: 3, nome: "Relógio Moderno", preco: 199.90, imagem: "https://via.placeholder.com/200x120?text=Rel%C3%B3gio" }
+        ];
+
+        const carrinho = [];
+
+        function atualizarCarrinho() {
+            const lista = document.getElementById('itens-carrinho');
+            lista.innerHTML = '';
+            let total = 0;
+            carrinho.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.nome} - R$ ${item.preco.toFixed(2)}`;
+                lista.appendChild(li);
+                total += item.preco;
+            });
+            document.getElementById('total-carrinho').textContent = total.toFixed(2);
+        }
+
+        function adicionarAoCarrinho(id) {
+            const produto = produtos.find(p => p.id === id);
+            if (produto) {
+                carrinho.push(produto);
+                atualizarCarrinho();
+            }
+        }
+
+        function mostrarProdutos() {
+            const lista = document.getElementById('lista-produtos');
+            produtos.forEach(produto => {
+                const div = document.createElement('div');
+                div.className = 'produto';
+                div.innerHTML = `
+                    <img src="${produto.imagem}" alt="${produto.nome}">
+                    <h3>${produto.nome}</h3>
+                    <p>R$ ${produto.preco.toFixed(2)}</p>
+                    <button onclick="adicionarAoCarrinho(${produto.id})">Adicionar ao Carrinho</button>
+                `;
+                lista.appendChild(div);
+            });
+        }
+
+        mostrarProdutos();
+    </script>
+</body>
+</html>
